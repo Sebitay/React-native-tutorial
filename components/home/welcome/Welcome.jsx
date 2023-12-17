@@ -6,14 +6,18 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 
 import styles from "./welcome.style";
-import { icons, Sizes } from "../../../constants";
+import { icons, SIZES } from "../../../constants";
+
+const jobTypes = ["Full Time", "Part Time", "Internship"]
 
 const Welcome = () => {
   const router = useRouter();
+  const [activeJobType, setActiveJobType] = useState(jobTypes[0]);
 
   return (
     <View>
@@ -31,7 +35,24 @@ const Welcome = () => {
             placeholder="What are you looking for?"
           />
         </View>
+        <TouchableOpacity style={styles.searchBtn} onPress={() => {}}>
+          <Image
+            source={icons.search}
+            resizeMode="contain"
+            style={styles.searchBtnImage}
+          />
+        </TouchableOpacity>
       </View>
+
+      <ScrollView style={styles.tabsContainer} horizontal contentContainerStyle={{ columnGap: SIZES.small }}>
+        {
+          jobTypes.map((item,index) => (
+            <TouchableOpacity key={index} style={styles.tab(activeJobType, item)} onPress={() => {setActiveJobType(item); router.push('/search/${item}')}}>
+              <Text style={styles.tabText(activeJobType,item)}>{item}</Text>
+            </TouchableOpacity>
+          ))
+        }
+      </ScrollView> 
     </View>
   );
 };
