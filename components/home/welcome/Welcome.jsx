@@ -13,9 +13,9 @@ import { useRouter } from "expo-router";
 import styles from "./welcome.style";
 import { icons, SIZES } from "../../../constants";
 
-const jobTypes = ["Full Time", "Part Time", "Internship"]
+const jobTypes = ["Full Time", "Part Time", "Contractor", "Internship"]
 
-const Welcome = () => {
+const Welcome = ({searchTerm, setSearchTerm, handleClick}) => {
   const router = useRouter();
   const [activeJobType, setActiveJobType] = useState(jobTypes[0]);
 
@@ -30,12 +30,12 @@ const Welcome = () => {
         <View style={styles.searchWrapper}>
           <TextInput
             styles={styles.searchInput}
-            value=""
-            onChange={() => {}}
+            value={searchTerm}
+            onChangeText={(text) => {setSearchTerm(text)}}
             placeholder="What are you looking for?"
           />
         </View>
-        <TouchableOpacity style={styles.searchBtn} onPress={() => {}}>
+        <TouchableOpacity style={styles.searchBtn} onPress={handleClick}>
           <Image
             source={icons.search}
             resizeMode="contain"
@@ -44,10 +44,10 @@ const Welcome = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.tabsContainer} horizontal contentContainerStyle={{ columnGap: SIZES.small }}>
+      <ScrollView style={styles.tabsContainer} horizontal contentContainerStyle={{ columnGap: SIZES.small }} showsHorizontalScrollIndicator={false}>
         {
           jobTypes.map((item,index) => (
-            <TouchableOpacity key={index} style={styles.tab(activeJobType, item)} onPress={() => {setActiveJobType(item); router.push('/search/${item}')}}>
+            <TouchableOpacity key={index} style={styles.tab(activeJobType, item)} onPress={() => {setActiveJobType(item); router.push(`/search/${item}`)}}>
               <Text style={styles.tabText(activeJobType,item)}>{item}</Text>
             </TouchableOpacity>
           ))

@@ -17,25 +17,10 @@ SplashScreen.preventAutoHideAsync();
 const Home = () => {
   const router = useRouter();
 
-  const [fontsLoaded] = useFonts({
-    DMBold: require("../assets/fonts/DMSans-Bold.ttf"),
-    DMMedium: require("../assets/fonts/DMSans-Medium.ttf"),
-    DMRegular: require("../assets/fonts/DMSans-Regular.ttf"),
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
+  const [search, setSearch] = useState("");
 
   return (
-    <SafeAreaView
-      onLayout={onLayoutRootView}
-      style={{ flex: 1, backgroundColor: COLORS.lightWhite }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: COLORS.lightWhite },
@@ -51,7 +36,15 @@ const Home = () => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium }}>
-          <Welcome />
+          <Welcome
+            searchTerm={search}
+            setSearchTerm={setSearch}
+            handleClick={() => {
+              if (search) {
+                router.push(`/search/${search}`);
+              }
+            }}
+          />
           <Popularjobs />
           <Nearbyjobs />
         </View>
